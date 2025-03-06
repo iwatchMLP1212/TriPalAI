@@ -1,0 +1,1 @@
+ALTER TABLE "bots" ADD CONSTRAINT "bots_name_unique" UNIQUE("name");

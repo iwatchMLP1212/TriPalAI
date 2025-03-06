@@ -1,0 +1,1 @@
+ALTER TABLE "messages" RENAME COLUMN "isOutgoing" TO "is_outgoing";
