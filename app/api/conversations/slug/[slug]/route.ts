@@ -44,3 +44,34 @@ export const GET = async (
     );
   }
 };
+
+export const DELETE = async (
+  req: NextRequest,
+  { params }: { params: Promise<{ slug: string }> }
+) => {
+  if (!params || !(await params).slug) {
+    return NextResponse.json(
+      { error: "Missing slug parameter" },
+      { status: StatusCode.BadRequest }
+    );
+  }
+
+  const conversationSlug = decodeURIComponent((await params).slug);
+
+  try {
+    const result = await db
+      .delete(conversations)
+      .where(eq(conversations.slug, conversationSlug));
+
+    return NextResponse.json(
+      { message: "Conversation deleted successfully", result },
+      { status: StatusCode.OK }
+    );
+  } catch (error) {
+    console.error("DELETE error:", error);
+    return NextResponse.json(
+      { error: "Failed to delete conversation" },
+      { status: StatusCode.InternalServerError }
+    );
+  }
+};
