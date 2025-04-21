@@ -20,7 +20,10 @@ TriPalAI là nền tảng trợ lý học tập cá nhân hóa dành cho học s
 
 ## 🚀 Hướng dẫn chạy local
 
-#### Lưu ý tải backend
+### Backend
+
+Tải backend theo hướng dẫn từ repo:
+https://github.com/iwatchMLP1212/TriPalAI---Backend.git
 
 ### 1. Clone repo
 
