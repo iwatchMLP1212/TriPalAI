@@ -76,7 +76,11 @@ const Chat = async ({ params }: { params: Promise<{ chat: string }> }) => {
         />
       )}
       <div className="flex flex-col h-full w-auto">
-        <ChatHeader botName={botName} imageUrl={imageUrl} />
+        <ChatHeader
+          botName={botName}
+          imageUrl={imageUrl}
+          conversationSlug={conversationSlug}
+        />
         <Suspense fallback={<p>Loading...</p>}>
           <ChatBodyProvider
             conversationId={conversationId}
