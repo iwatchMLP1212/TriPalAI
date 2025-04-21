@@ -7,10 +7,12 @@ const ChatHeader = ({
   botName,
   imageUrl,
   hasSettingButton = true,
+  conversationSlug,
 }: {
   botName: string;
   imageUrl: string;
   hasSettingButton?: boolean;
+  conversationSlug?: string;
 }) => {
   return (
     <header className="flex items-center border-b border-gray-300 justify-between p-4">
@@ -31,7 +33,7 @@ const ChatHeader = ({
           </h1>
         </div>
       </div>
-      {hasSettingButton && <SettingButton />}
+      {hasSettingButton && <SettingButton slug={conversationSlug!} />}
     </header>
   );
 };
