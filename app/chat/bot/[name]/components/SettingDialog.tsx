@@ -12,9 +12,10 @@ const SettingDialog = () => {
     <DialogContent>
       <DialogHeader>
         <DialogTitle className="text-2xl border-b pb-1 border-secondary">
-          Settings
+          Cài đặt
         </DialogTitle>
-        <DialogDescription>
+        <DialogDescription className="flex flex-col gap-4">
+          <Button>Test tính cách</Button>
           <Button variant={"destructive"}>
             <Trash2 size={24} />
             Delete chat

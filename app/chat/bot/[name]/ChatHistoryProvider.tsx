@@ -6,18 +6,30 @@ import { queryClient } from "@/lib/queryClient";
 import { FC } from "react";
 import ChatHistory from "./components/ChatHistory";
 
-type ChatHistoryProps = {
+export type ChatHistoryProps = {
   userId: number;
-  botName: string;
+  botId: number;
+  userName: string;
+  imageUrl?: string;
 };
 
-const ChatHistoryProvider: FC<ChatHistoryProps> = ({ userId, botName }) => {
+const ChatHistoryProvider: FC<ChatHistoryProps> = ({
+  userId,
+  botId,
+  userName,
+  imageUrl,
+}) => {
   return (
-    <SessionProvider>
-      <QueryClientProvider client={queryClient}>
-        <ChatHistory userId={userId} botName={botName} />
-      </QueryClientProvider>
-    </SessionProvider>
+    <QueryClientProvider client={queryClient}>
+      <SessionProvider>
+        <ChatHistory
+          userId={userId}
+          botId={botId}
+          userName={userName}
+          imageUrl={imageUrl}
+        />
+      </SessionProvider>
+    </QueryClientProvider>
   );
 };
 

@@ -1,6 +1,6 @@
 {
-  "id": "9ad518c4-bdf8-41b8-be22-1d19bc498dfc",
-  "prevId": "c1898557-9a57-4209-85c4-0541fc2054e5",
+  "id": "786ec583-d25b-41d5-a482-113d95a6cbfd",
+  "prevId": "5151e0a3-c589-44e3-9e60-b049ddbd1ae2",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -71,6 +71,19 @@
           "primaryKey": false,
           "notNull": true
         },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "last_open": {
+          "name": "last_open",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
         "user_id": {
           "name": "user_id",
           "type": "integer",
@@ -135,9 +148,15 @@
           "primaryKey": false,
           "notNull": true
         },
+        "is_outgoing": {
+          "name": "is_outgoing",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
         "timestamp": {
           "name": "timestamp",
-          "type": "timestamp",
+          "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": false,
           "default": "now()"
@@ -146,10 +165,62 @@
           "name": "conv_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         }
       },
-      "indexes": {},
+      "indexes": {
+        "idx_messages_conversation": {
+          "name": "idx_messages_conversation",
+          "columns": [
+            {
+              "expression": "conv_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_messages_timestamp": {
+          "name": "idx_messages_timestamp",
+          "columns": [
+            {
+              "expression": "timestamp",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_messages_conv_time": {
+          "name": "idx_messages_conv_time",
+          "columns": [
+            {
+              "expression": "conv_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "timestamp",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
       "foreignKeys": {
         "messages_conv_id_conversations_id_fk": {
           "name": "messages_conv_id_conversations_id_fk",

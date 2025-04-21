@@ -1,5 +1,6 @@
 import { createContext, useContext, useReducer, ReactNode } from "react";
-import { Message } from "@/types/message";
+
+import { Message } from "@/types/types";
 
 // Declare types
 type SendingState = boolean;
@@ -20,6 +21,8 @@ type SendingContextType = {
 const MessageReducer = (state: MessageState, action: MessageAction) => {
   switch (action.type) {
     case "SEND_MESSAGE": {
+      console.log("Messages:", state);
+      console.log("Message sent:", action.payload);
       return [...state, action.payload];
     }
     default: {

@@ -32,15 +32,11 @@ import { Button } from "@/components/ui/button";
 import { Alert } from "@/components/ui/alert";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { ChatHistoryProps } from "../ChatHistoryProvider";
 import DesktopSidebar from "./DesktopSidebar";
 
 type History = {
   conversations: Conversation;
-};
-
-type ChatHistoryProps = {
-  userId: number;
-  botName: string;
 };
 
 const fetchChatHistory = async (userId: number): Promise<History[]> => {
@@ -50,7 +46,12 @@ const fetchChatHistory = async (userId: number): Promise<History[]> => {
   return data;
 };
 
-const ChatHistory: FC<ChatHistoryProps> = ({ userId, botName }) => {
+const ChatHistory: FC<ChatHistoryProps> = ({
+  userId,
+  botId,
+  userName,
+  imageUrl,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
@@ -151,14 +152,7 @@ const ChatHistory: FC<ChatHistoryProps> = ({ userId, botName }) => {
           <div className="p-4 h-full flex flex-col">
             <SheetHeader className="mb-4">
               <div className="flex items-center justify-between">
-                <SheetTitle className="text-lg">Chat History</SheetTitle>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setIsOpen(false)}
-                >
-                  <X className="h-5 w-5" />
-                </Button>
+                <SheetTitle className="text-lg">Lịch sử đoạn chat</SheetTitle>
               </div>
             </SheetHeader>
 
@@ -169,7 +163,7 @@ const ChatHistory: FC<ChatHistoryProps> = ({ userId, botName }) => {
 
             <div className="px-2 mb-4">
               <Input
-                placeholder="Search chats..."
+                placeholder="Tìm đoạn chat..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="rounded-lg"
@@ -188,6 +182,10 @@ const ChatHistory: FC<ChatHistoryProps> = ({ userId, botName }) => {
         renderHistory={renderHistory}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
+        userId={userId}
+        botId={botId}
+        userName={userName}
+        imageUrl={imageUrl}
       />
     </>
   );

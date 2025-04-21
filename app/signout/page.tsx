@@ -2,12 +2,12 @@
 
 import { useEffect } from "react";
 import { signOut } from "next-auth/react";
+import { Routes } from "@/lib/utils";
 
 export default function SignOutPage() {
   useEffect(() => {
-    // This will clear your app's session and then redirect to "/"
-    signOut({ callbackUrl: "/" });
+    signOut({ callbackUrl: Routes.networkHost });
   }, []);
 
-  return <div>Signing out...</div>;
+  return <div className="font-bold text-lg">Đang đang xuất...</div>;
 }

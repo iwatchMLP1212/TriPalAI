@@ -1,6 +1,6 @@
 import { db } from "@/db/db";
 import { conversations, users } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 import { StatusCode } from "@/lib/utils";
 import { NextResponse } from "next/server";
 
@@ -15,7 +15,8 @@ export const GET = async (
       .select({ conversations })
       .from(users)
       .rightJoin(conversations, eq(users.id, conversations.user_id))
-      .where(eq(users.id, userId));
+      .where(eq(users.id, userId))
+      .orderBy(desc(conversations.last_open));
     return NextResponse.json(selectedConveration);
   } catch (error) {
     return NextResponse.json(

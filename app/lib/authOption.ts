@@ -1,9 +1,36 @@
 // lib/authOptions.ts
 import type { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+
 import { db } from "@/db/db";
 import { users } from "@/db/schema";
+
 import { eq } from "drizzle-orm";
+
+import { getRandomNumber } from "./utils";
+
+const images = [
+  "Aidan",
+  "Avery",
+  "Sawyer",
+  "Liliana",
+  "Easton",
+  "Caleb",
+  "Eliza",
+  "Jocelyn",
+  "Jade",
+  "Alexander",
+  "Valentina",
+  "Vivian",
+  "Brooklynn",
+  "Sadie",
+  "Brian",
+  "Jessica",
+  "Leah",
+  "Wyatt",
+  "Mason",
+  "Christopher",
+];
 
 const checkIfUserExists = async (email: string) => {
   try {
@@ -19,12 +46,17 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      authorization: {
+        params: {
+          prompt: "select_account",
+        },
+      },
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
-    signIn: "/app/signin",
-    signOut: "/app/signout",
+    signIn: "http://192.168.1.9:3000/app/signin",
+    signOut: "http://192.168.1.9:3000/app/signout",
   },
   callbacks: {
     async signIn({ user }) {
@@ -39,18 +71,32 @@ export const authOptions: NextAuthOptions = {
           await db.insert(users).values({
             name: user.name || "Unknown",
             email: user.email as string,
+            image_url: `https://api.dicebear.com/9.x/glass/svg?seed=${
+              images[getRandomNumber(0, images.length - 1)]
+            }`,
           });
         }
-        console.log("New user added:", user.email);
       } catch (error) {
         console.error("Failed creating new user:", error);
         return false;
       }
       return true;
     },
+
+    async jwt({ token, user, account, profile }) {
+      // First login only — store image from Google
+      if (account && profile) {
+        token.picture = (profile as any).picture;
+      }
+      return token;
+    },
+
     async session({ session, token }) {
       if (session.user && token.sub) {
         session.user.id = token.sub as string;
+      }
+      if (token.picture) {
+        session.user.image = token.picture as string;
       }
       return session;
     },

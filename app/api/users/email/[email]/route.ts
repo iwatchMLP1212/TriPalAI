@@ -26,6 +26,7 @@ export const GET = async (
     id: users.id,
     name: users.name,
     email: users.email,
+    image_url: users.image_url,
   };
 
   try {

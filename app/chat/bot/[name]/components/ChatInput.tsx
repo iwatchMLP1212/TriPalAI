@@ -20,7 +20,7 @@ const ChatInput = forwardRef<HTMLInputElement, ChatInputProps>(
   ) => {
     return (
       <input
-        value={value} // Make it controlled
+        value={value}
         onChange={(e) => setInput(e.target.value)}
         ref={ref}
         type="text"

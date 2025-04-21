@@ -1,6 +1,6 @@
 import { db } from "@/db/db";
 import { messages } from "@/db/schema";
-import { eq, and, desc, lt } from "drizzle-orm";
+import { eq, and, desc, lte, gt } from "drizzle-orm";
 import { type NextRequest, NextResponse } from "next/server";
 import { StatusCode } from "@/lib/utils";
 
@@ -27,7 +27,7 @@ export const GET = async (
       .from(messages)
       .where(
         cursor
-          ? and(eq(messages.conversation_id, convId), lt(messages.id, cursor))
+          ? and(eq(messages.conversation_id, convId), lte(messages.id, cursor))
           : eq(messages.conversation_id, convId)
       )
       .orderBy(desc(messages.timestamp))
@@ -36,20 +36,23 @@ export const GET = async (
     const selectedMessages = await query;
 
     // Find next cursor
-    const nextCursor = selectedMessages.length
-      ? selectedMessages[selectedMessages.length - 1].id
+    const nextCursor = selectedMessages.length ? selectedMessages[0].id : null;
+    const prevCursor = selectedMessages.length
+      ? selectedMessages[selectedMessages.length - 1].id - 1
       : null;
 
     if (reverse) {
       return NextResponse.json({
         message: selectedMessages.reverse(),
         nextCursor,
+        prevCursor,
       });
     }
 
     return NextResponse.json({
       message: selectedMessages,
       nextCursor,
+      prevCursor,
     });
   } catch (error) {
     return NextResponse.json(

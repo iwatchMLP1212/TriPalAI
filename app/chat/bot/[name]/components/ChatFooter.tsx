@@ -1,78 +1,24 @@
 "use client";
 
 import { FC } from "react";
-import { useState } from "react";
-import { useMessageContext } from "@/context/message";
+
 import { Send } from "lucide-react";
-import { ApiEndpoints } from "@/lib/utils";
+
 import ChatInput from "./ChatInput";
-import axios from "axios";
 
-type ChatFooterProps = {
-  conversationId: number;
-};
+interface ChatFooterProps {
+  input: string;
+  setInput: (value: string) => void;
+  isSending: boolean;
+  handleSendMessage: (message: string) => void;
+}
 
-const ChatFooter: FC<ChatFooterProps> = ({ conversationId }) => {
-  const [input, setInput] = useState("");
-
-  const { sendMessage, setSendingState, isSending } = useMessageContext();
-
-  type ResponseData = { response: string };
-
-  const handleSendMessage = async (message: string) => {
-    if (!message.trim()) return;
-
-    try {
-      setInput("");
-
-      // User message
-      sendMessage({
-        content: message,
-        outgoing: true,
-      });
-
-      axios
-        .post(`${ApiEndpoints.Message}`, {
-          conversationId: conversationId,
-          message: message,
-          isOutgoing: true,
-        })
-        .then((res) => console.log("New message created:", res))
-        .catch((err) => console.error("Error creating message:", err));
-
-      setSendingState("SET_MESSAGE_SENDING");
-
-      // Get AI response
-      const response = await axios.post(ApiEndpoints.AiResponse, { message });
-      const responseData = response.data as ResponseData;
-
-      setSendingState("SET_MESSAGE_SENT");
-
-      // Send AI message
-      sendMessage({
-        content: responseData.response,
-        outgoing: false,
-      });
-
-      axios
-        .post(`${ApiEndpoints.Message}`, {
-          conversationId: conversationId,
-          message: responseData.response,
-          isOutgoing: false,
-        })
-        .then((res) => console.log("New message created:", res))
-        .catch((err) => console.error("Error creating message:", err));
-
-      console.log("Server Response:", responseData);
-      return responseData;
-    } catch (error: any) {
-      console.error(
-        "Error sending message:",
-        error.response?.data || error.message
-      );
-    }
-  };
-
+const ChatFooter: FC<ChatFooterProps> = ({
+  input,
+  setInput,
+  isSending,
+  handleSendMessage,
+}) => {
   const handleKeyDown = async (
     event: React.KeyboardEvent<HTMLInputElement>
   ) => {

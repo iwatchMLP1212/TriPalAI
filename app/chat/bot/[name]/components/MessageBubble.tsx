@@ -3,6 +3,7 @@ import {
   MessageSquareQuote,
   Reply,
   RectangleEllipsis,
+  RotateCcw,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -10,6 +11,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
+import { ERROR_MESSAGE } from "../ChatFooterProvider";
 
 type MessageBubbleProps = {
   children: string;
@@ -20,10 +23,13 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   children,
   outgoing = true,
 }) => {
+  const isErrorMessage = children === ERROR_MESSAGE;
   return (
     <>
       <div
-        className={`max-w-[70%] whitespace-break-spaces p-4 rounded-lg shadow ${
+        className={`xl:max-w-[70%] md:max-w-full whitespace-break-spaces p-4 rounded-lg shadow ${
+          isErrorMessage && "bg-red-500 text-white"
+        } ${
           outgoing
             ? "bg-primary text-white self-end"
             : "bg-white text-card-foreground self-start"
@@ -36,7 +42,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
           <button className="p-2 text-gray-500 hover:text-black hover:bg-gray-200 transition-all rounded-full w-fit">
             <Clipboard size={15} />
           </button>
-          <DropdownMenu>
+          {/* <DropdownMenu>
             <DropdownMenuTrigger className="p-2 text-gray-500 hover:text-black hover:bg-gray-200 transition-all rounded-full w-fit outline-none">
               <MessageSquareQuote size={15} />
             </DropdownMenuTrigger>
@@ -51,6 +57,9 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+          <button className="p-2 text-gray-500 hover:text-black hover:bg-gray-200 transition-all rounded-full w-fit">
+            <RotateCcw size={15} />
+          </button> */}
         </div>
       )}
     </>

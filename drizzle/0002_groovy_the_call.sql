@@ -1,1 +1,0 @@
-ALTER TABLE "messages" ADD COLUMN "isOutgoing" boolean NOT NULL;
