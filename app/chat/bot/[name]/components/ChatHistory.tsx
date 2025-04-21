@@ -2,19 +2,24 @@
 
 import {
   History,
-  X,
   EllipsisVertical,
   Plus,
-  Trash2,
   PenLine,
   LoaderCircle,
 } from "lucide-react";
+
 import { useState, FC } from "react";
+
 import { ApiEndpoints } from "@/lib/utils";
+
 import { Conversation } from "@/types/drizzle-table";
+
 import { useRouter } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
+
 import axios from "axios";
+
+import { useQuery } from "@tanstack/react-query";
+
 import {
   Sheet,
   SheetContent,
@@ -32,8 +37,20 @@ import { Button } from "@/components/ui/button";
 import { Alert } from "@/components/ui/alert";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+
 import { ChatHistoryProps } from "../ChatHistoryProvider";
+
 import DesktopSidebar from "./DesktopSidebar";
+
+import { useModifyConversation } from "@/lib/api/conversations/useModifyConversation";
+import { queryClient } from "@/lib/queryClient";
 
 type History = {
   conversations: Conversation;
@@ -53,8 +70,19 @@ const ChatHistory: FC<ChatHistoryProps> = ({
   imageUrl,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isRenameOpen, setIsRenameOpen] = useState(false);
+  const [selectedConversation, setSelectedConversation] =
+    useState<Conversation | null>(null);
+  const [newName, setNewName] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+
   const router = useRouter();
+
+  const {
+    mutate,
+    isPending: isRenaming,
+    error: renameError,
+  } = useModifyConversation();
 
   const { data, error, isLoading } = useQuery({
     queryKey: ["chats", userId],
@@ -68,6 +96,25 @@ const ChatHistory: FC<ChatHistoryProps> = ({
   const redirectToChatPage = (chatSlug: string) => {
     router.push(`/chat/c/${chatSlug}`);
     setIsOpen(false);
+  };
+
+  const handleRename = async () => {
+    if (!selectedConversation || !newName.trim()) return;
+
+    mutate(
+      {
+        slug: selectedConversation.slug,
+        updatedData: { name: newName },
+      },
+      {
+        onSuccess: () => {
+          setIsRenameOpen(false);
+          setSelectedConversation(null);
+          setNewName("");
+          queryClient.invalidateQueries({ queryKey: ["chats", userId] });
+        },
+      }
+    );
   };
 
   const renderHistory = () => {
@@ -110,22 +157,20 @@ const ChatHistory: FC<ChatHistoryProps> = ({
               <EllipsisVertical className="text-neutral-400 hover:text-black h-6 w-6 p-1" />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSelectedConversation(item.conversations);
+                  setNewName(item.conversations.name);
+                  setIsRenameOpen(true);
+                }}
+              >
                 <Button
                   variant={"ghost"}
                   className="font-bold flex justify-center items-center gap-2 w-fit h-fit p-1"
                 >
                   <PenLine size={16} />
                   Đổi tên
-                </Button>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Button
-                  variant={"ghost"}
-                  className="text-red-500 font-bold flex justify-center items-center gap-2 w-fit h-fit p-1"
-                >
-                  <Trash2 size={16} />
-                  Xoá trò chuyện
                 </Button>
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -137,6 +182,41 @@ const ChatHistory: FC<ChatHistoryProps> = ({
 
   return (
     <>
+      {/* Rename Dialog */}
+      <Dialog open={isRenameOpen} onOpenChange={setIsRenameOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Đổi tên đoạn chat</DialogTitle>
+          </DialogHeader>
+
+          <div className="flex flex-col gap-2 mt-2">
+            <Input
+              value={newName}
+              onChange={(e) => setNewName(e.target.value)}
+              placeholder="Nhập tên mới"
+              className="mt-1"
+            />
+            {newName.trim() === "" && (
+              <p className="text-sm text-red-500">Tên không được để trống.</p>
+            )}
+            {newName === selectedConversation?.name && (
+              <p className="text-sm text-yellow-600">Tên chưa được thay đổi.</p>
+            )}
+          </div>
+
+          <DialogFooter className="mt-4">
+            <Button
+              onClick={handleRename}
+              disabled={
+                newName.trim() === "" || newName === selectedConversation?.name
+              }
+            >
+              Lưu thay đổi
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
       {/* Mobile Sheet */}
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger asChild>
