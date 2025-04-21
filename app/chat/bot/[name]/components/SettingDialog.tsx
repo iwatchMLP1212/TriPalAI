@@ -1,3 +1,5 @@
+"use client";
+
 import {
   DialogContent,
   DialogHeader,
@@ -10,14 +12,24 @@ import {
 import { Button } from "@/components/ui/button";
 import { Trash2, ClipboardList } from "lucide-react";
 import { useState } from "react";
+import { useDeleteConversation } from "@/lib/api/conversations/useDeleteConversation";
 
-const SettingDialog = () => {
+const SettingDialog = ({ slug }: { slug: string }) => {
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
 
-  const handleDeleteAllChats = () => {
-    // Add your delete logic here
-    console.log("Deleting all chats...");
-    setIsDeleteConfirmOpen(false);
+  const { mutate: deleteChat, isPending: isDeleting } = useDeleteConversation();
+
+  const handleDeleteChat = () => {
+    if (!slug) {
+      console.warn("No conversation slug provided.");
+      return;
+    }
+
+    deleteChat(slug, {
+      onSuccess: () => {
+        setIsDeleteConfirmOpen(false);
+      },
+    });
   };
 
   return (
@@ -26,7 +38,7 @@ const SettingDialog = () => {
         <DialogTitle className="text-2xl font-semibold border-b pb-3 border-gray-200 dark:border-gray-700">
           Cài đặt
         </DialogTitle>
-        <DialogDescription className="flex flex-col gap-5 mt-4">
+        <div className="flex flex-col gap-5 mt-4">
           <Button
             variant="outline"
             className="h-12 text-base gap-3 hover:bg-gray-50 dark:hover:bg-gray-800"
@@ -46,7 +58,7 @@ const SettingDialog = () => {
                   className="w-full h-12 text-base gap-2 hover:bg-destructive/90 transition-colors"
                 >
                   <Trash2 className="h-5 w-5" />
-                  <span>Xóa toàn bộ cuộc trò chuyện</span>
+                  <span>Xóa cuộc trò chuyện này</span>
                 </Button>
               </DialogTrigger>
 
@@ -56,7 +68,7 @@ const SettingDialog = () => {
                     Xác nhận xóa
                   </DialogTitle>
                   <DialogDescription className="mt-2">
-                    Bạn có chắc chắn muốn xóa toàn bộ lịch sử trò chuyện?
+                    Bạn có chắc chắn muốn xóa cuộc trò chuyện này?
                     <span className="block mt-1 text-destructive">
                       Hành động này không thể hoàn tác!
                     </span>
@@ -66,21 +78,26 @@ const SettingDialog = () => {
                   <Button
                     variant="outline"
                     onClick={() => setIsDeleteConfirmOpen(false)}
+                    disabled={isDeleting}
                   >
                     Hủy bỏ
                   </Button>
-                  <Button variant="destructive" onClick={handleDeleteAllChats}>
-                    Xác nhận xóa
+                  <Button
+                    variant="destructive"
+                    onClick={handleDeleteChat}
+                    disabled={isDeleting}
+                  >
+                    {isDeleting ? "Đang xóa..." : "Xác nhận xóa"}
                   </Button>
                 </DialogFooter>
               </DialogContent>
             </Dialog>
 
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 px-1">
-              Thao tác này sẽ xóa vĩnh viễn tất cả lịch sử trò chuyện.
-            </p>
+            <span className="text-sm text-gray-500 dark:text-gray-400 mt-2 px-1">
+              Thao tác này sẽ xóa vĩnh viễn cuộc trò chuyện này.
+            </span>
           </div>
-        </DialogDescription>
+        </div>
       </DialogHeader>
     </DialogContent>
   );
