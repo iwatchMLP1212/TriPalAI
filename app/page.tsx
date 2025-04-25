@@ -1,6 +1,4 @@
-import { Button } from "@/components/ui/button";
-
-import { Sparkles, BookOpen, UserCog, Star } from "lucide-react";
+import { BookOpen, UserCog, Star } from "lucide-react";
 
 import { getServerSession } from "next-auth";
 

@@ -65,3 +65,36 @@ export const messages = pgTable(
     ),
   })
 );
+
+export const flashcards = pgTable("flashcards", {
+  id: serial("id").primaryKey(),
+  front: text("front").notNull(),
+  back: text("back").notNull(),
+  user_email: text("user_email")
+    .references(() => users.email, { onDelete: "cascade" })
+    .notNull(),
+  flashcard_set_id: integer("flashcard_set_id")
+    .references(() => flashcardSets.id, { onDelete: "cascade" })
+    .notNull(),
+  created_at: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  updated_at: timestamp("updated_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+});
+
+export const flashcardSets = pgTable("flashcard_sets", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  description: text("description").notNull(),
+  user_email: text("user_email")
+    .references(() => users.email, { onDelete: "cascade" })
+    .notNull(),
+  is_completed: boolean("is_completed").default(false).notNull(),
+  last_studied: timestamp("last_studied", { withTimezone: true }),
+  created_at: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  flashcards_count: integer("flashcards_count").default(0).notNull(),
+});

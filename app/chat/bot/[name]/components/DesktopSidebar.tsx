@@ -6,7 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 
 import { useRouter } from "next/navigation";
 
-import { Plus, X, Menu } from "lucide-react";
+import { Plus, X, Menu, Layers, UserPen, LogOut } from "lucide-react";
 
 import { ApiEndpoints } from "@/lib/utils";
 
@@ -157,7 +157,7 @@ const DesktopSidebar = ({
       </Button>
       <div
         className={`${
-          !sidebarOpen ? "-left-96" : "left-0"
+          !sidebarOpen ? "-left-full" : "left-0"
         } hidden lg:block fixed left-0 top-0 h-screen w-72 border-r bg-background z-40 duration-300 transition-all`}
       >
         <div className="p-4 h-full flex flex-col">
@@ -208,13 +208,22 @@ const DesktopSidebar = ({
             </Card>
           </DropdownMenuTrigger>
 
-          <DropdownMenuContent className="flex flex-col justify-center items-center">
-            <Button variant={"ghost"} className="text-black w-full">
-              <Link href={"/character-test"}>Kiểm tra tính cách</Link>
-            </Button>
-            <Button variant={"ghost"} className="text-red-500 w-full">
-              <Link href={"/signout"}>Đăng xuất</Link>
-            </Button>
+          <DropdownMenuContent className="flex flex-col justify-center items-start">
+            <Link href={"/flashcard"} className="w-full">
+              <Button variant={"ghost"} className="text-black w-full">
+                <Layers /> Flashcard
+              </Button>
+            </Link>
+            <Link href={"/character-test"} className="w-full">
+              <Button variant={"ghost"} className="text-black w-full">
+                <UserPen /> Kiểm tra tính cách
+              </Button>
+            </Link>
+            <Link href={"/signout"} className="w-full">
+              <Button variant={"ghost"} className="text-red-500 w-full">
+                <LogOut /> Đăng xuất
+              </Button>
+            </Link>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

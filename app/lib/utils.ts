@@ -25,6 +25,7 @@ export enum ApiEndpoints {
   Bot = "http://localhost:3000/api/bots",
   User = "http://localhost:3000/api/users",
   Conversation = "http://localhost:3000/api/conversations",
+  Flashcard = "http://localhost:3000/api/flashcard",
 }
 
 // export enum ApiEndpoints {
@@ -44,6 +45,7 @@ export enum Routes {
 export enum StatusCode {
   OK = 200,
   BadRequest = 400,
+  NotFound = 404,
   InternalServerError = 500,
   // There are more to add
 }

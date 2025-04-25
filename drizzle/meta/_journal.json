@@ -22,6 +22,34 @@
       "when": 1745167633121,
       "tag": "0002_high_solo",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1745507013664,
+      "tag": "0003_quiet_lady_vermin",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1745511654792,
+      "tag": "0004_sad_hedge_knight",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1745514198364,
+      "tag": "0005_soft_sentinel",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1745585674933,
+      "tag": "0006_material_ben_grimm",
+      "breakpoints": true
     }
   ]
 }
