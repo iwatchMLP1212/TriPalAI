@@ -5,9 +5,9 @@ import { eq } from "drizzle-orm";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { userEmail: string } }
+  { params }: { params: Promise<{ userEmail: string }> }
 ) {
-  const userEmail = params.userEmail;
+  const userEmail = (await params).userEmail;
 
   try {
     const cards = await db

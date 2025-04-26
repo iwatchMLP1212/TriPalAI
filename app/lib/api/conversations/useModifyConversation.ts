@@ -2,7 +2,6 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { ApiEndpoints } from "@/lib/utils"; // Your API endpoints
 import { queryClient } from "@/lib/queryClient";
-import { Conversation } from "@/types/drizzle-table";
 
 // Define the expected return type of the modifyConversation function
 interface ModifyConversationResponse {

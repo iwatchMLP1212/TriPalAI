@@ -50,6 +50,7 @@ const Chat = async ({ params }: { params: Promise<{ chat: string }> }) => {
   const userEmail = data.users.email;
   const userName = data.users.name;
   const userImageUrl = data.users.image_url;
+  const userPersonalityColor = data.users.personality_color;
 
   if (sessionEmail !== userEmail) {
     return <p>Forbidden resource</p>;
@@ -86,6 +87,7 @@ const Chat = async ({ params }: { params: Promise<{ chat: string }> }) => {
           <ChatBodyProvider
             conversationId={conversationId}
             chatSlug={conversationSlug}
+            userPersonalityColor={userPersonalityColor}
           />
         </Suspense>
       </div>

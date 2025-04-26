@@ -1,10 +1,14 @@
 import PageContent from "./PageContent";
 import Providers from "../../components/Providers"; // new wrapper
 
-export default function Page({ params }: { params: { flashcardId: string } }) {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ flashcardId: string }>;
+}) {
   return (
     <Providers>
-      <PageContent flashcardId={params.flashcardId} />
+      <PageContent flashcardId={(await params).flashcardId} />
     </Providers>
   );
 }

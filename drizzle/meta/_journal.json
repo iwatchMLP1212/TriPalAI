@@ -50,6 +50,13 @@
       "when": 1745585674933,
       "tag": "0006_material_ben_grimm",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1745686955186,
+      "tag": "0007_mature_blackheart",
+      "breakpoints": true
     }
   ]
 }

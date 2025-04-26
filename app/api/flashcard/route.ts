@@ -19,34 +19,6 @@ export async function GET(req: NextRequest) {
   }
 }
 
-// POST /api/flashcard
-export async function POST(req: NextRequest) {
-  try {
-    const body = await req.json();
-    const { front, back, user_email } = body;
-
-    if (!front || !back || !user_email) {
-      return NextResponse.json(
-        { error: "Missing required fields" },
-        { status: StatusCode.BadRequest }
-      );
-    }
-
-    const [created] = await db
-      .insert(flashcards)
-      .values({ front, back, user_email })
-      .returning();
-
-    return NextResponse.json(created, { status: 201 });
-  } catch (err) {
-    console.error("POST /flashcards error:", err);
-    return NextResponse.json(
-      { error: "Failed to create flashcard" },
-      { status: StatusCode.InternalServerError }
-    );
-  }
-}
-
 // DELETE /api/flashcard?id=1
 export async function DELETE(req: NextRequest) {
   try {

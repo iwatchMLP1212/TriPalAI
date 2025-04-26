@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db/db";
 import { flashcardSets } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { asc, eq } from "drizzle-orm";
 
 export async function GET(req: NextRequest) {
   try {
@@ -39,7 +39,8 @@ export async function GET(req: NextRequest) {
       const sets = await db
         .select()
         .from(flashcardSets)
-        .where(eq(flashcardSets.user_email, email));
+        .where(eq(flashcardSets.user_email, email))
+        .orderBy(asc(flashcardSets.last_studied));
 
       return NextResponse.json(sets);
     }

@@ -7,7 +7,16 @@ import {
   integer,
   boolean,
   index,
+  pgEnum,
 } from "drizzle-orm/pg-core";
+
+// Personality colors
+export const PersonalityColor = pgEnum(`personality_colors`, [
+  "blue",
+  "green",
+  "yellow",
+  "orange",
+]);
 
 // Users table
 export const users = pgTable("users", {
@@ -15,6 +24,7 @@ export const users = pgTable("users", {
   name: text("name").notNull(),
   email: varchar("email", { length: 255 }).unique().notNull(),
   image_url: text("image"),
+  personality_color: PersonalityColor("personality_color"),
 });
 
 // Bots table

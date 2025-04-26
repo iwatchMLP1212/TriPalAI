@@ -5,9 +5,9 @@ import { eq } from "drizzle-orm";
 
 export async function GET(
   req: Request,
-  { params }: { params: { "conv-slug": string } }
+  { params }: { params: Promise<{ "conv-slug": string }> }
 ) {
-  const slug = params["conv-slug"];
+  const slug = (await params)["conv-slug"];
   if (!slug)
     return NextResponse.json({ error: "Missing slug" }, { status: 400 });
 

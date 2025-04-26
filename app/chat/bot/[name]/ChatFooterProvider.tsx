@@ -15,6 +15,7 @@ import ChatFooter from "./components/ChatFooter";
 
 interface ChatFooterProviderProps {
   conversationId: number;
+  userPersonalityColor: "blue" | "green" | "yellow" | "orange";
 }
 
 export const ERROR_MESSAGE = "Đang gặp lỗi, vui lòng thử lại sau.";
@@ -38,14 +39,21 @@ const postMessage = async ({
     .catch((err) => console.error("Error creating message:", err));
 };
 
-const getBotResponse = async (message: string) => {
+const getBotResponse = async (
+  message: string,
+  userPersonalityColor: "blue" | "green" | "yellow" | "orange"
+) => {
   // Get AI response
-  const response = await axios.post(ApiEndpoints.AiResponse, { message });
+  const modifedMessage = `Tính cách: ${userPersonalityColor}. Câu hỏi: ${message}`;
+  const response = await axios.post(ApiEndpoints.AiResponse, {
+    message: modifedMessage,
+  });
   return response.data as ParsedMessageServerResponse;
 };
 
 const ChatFooterProvider: React.FC<ChatFooterProviderProps> = ({
   conversationId,
+  userPersonalityColor,
 }) => {
   const [input, setInput] = useState("");
   const [hints, setHints] = useState<string[]>([]);
@@ -85,7 +93,8 @@ const ChatFooterProvider: React.FC<ChatFooterProviderProps> = ({
       setSendingState("SET_MESSAGE_SENDING");
 
       const AI_RESPONSE: ParsedMessageServerResponse = await getBotResponse(
-        message
+        message,
+        userPersonalityColor
       );
 
       console.log(AI_RESPONSE);

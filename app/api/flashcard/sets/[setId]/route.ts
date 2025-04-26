@@ -5,10 +5,12 @@ import { eq } from "drizzle-orm";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { setId: string } }
+  { params }: { params: Promise<{ setId: string }> }
 ) {
   try {
-    const setId = parseInt(params.setId);
+    const resolvedParams = await params;
+    const setId = parseInt(resolvedParams.setId, 10);
+
     if (isNaN(setId)) {
       return NextResponse.json({ error: "Invalid set ID" }, { status: 400 });
     }
