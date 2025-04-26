@@ -6,6 +6,9 @@ import {
   Plus,
   PenLine,
   LoaderCircle,
+  Layers,
+  LogOut,
+  UserPen,
 } from "lucide-react";
 
 import { useState, FC } from "react";
@@ -15,6 +18,7 @@ import { ApiEndpoints } from "@/lib/utils";
 import { Conversation } from "@/types/drizzle-table";
 
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 import axios from "axios";
 
@@ -51,6 +55,7 @@ import DesktopSidebar from "./DesktopSidebar";
 
 import { useModifyConversation } from "@/lib/api/conversations/useModifyConversation";
 import { queryClient } from "@/lib/queryClient";
+import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 
 type History = {
   conversations: Conversation;
@@ -69,7 +74,7 @@ const ChatHistory: FC<ChatHistoryProps> = ({
   userName,
   imageUrl,
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const [isRenameOpen, setIsRenameOpen] = useState(false);
   const [selectedConversation, setSelectedConversation] =
     useState<Conversation | null>(null);
@@ -253,6 +258,43 @@ const ChatHistory: FC<ChatHistoryProps> = ({
             <div className="overflow-y-auto flex-1 px-2 pb-4">
               {renderHistory()}
             </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Card className="w-full mx-auto p-3 border border-slate-300 shadow-md hover:shadow-xl transition-all cursor-pointer">
+                  <div className="flex items-center gap-4">
+                    <Avatar className="w-12 h-12">
+                      <AvatarImage
+                        src={
+                          imageUrl ||
+                          "https://api.dicebear.com/9.x/glass/svg?seed=Amber"
+                        }
+                        alt="Avatar"
+                        className="rounded-md"
+                      />
+                    </Avatar>
+                    <span className="text-base font-medium">{userName}</span>
+                  </div>
+                </Card>
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent className="w-64 mx-2 mb-2">
+                <Link href={"/flashcard"} className="w-full">
+                  <Button variant={"ghost"} className="text-black w-full">
+                    <Layers /> Flashcard
+                  </Button>
+                </Link>
+                <Link href={"/character-test"} className="w-full">
+                  <Button variant={"ghost"} className="text-black w-full">
+                    <UserPen /> Kiểm tra tính cách
+                  </Button>
+                </Link>
+                <Link href={"/signout"} className="w-full">
+                  <Button variant={"ghost"} className="text-red-500 w-full">
+                    <LogOut /> Đăng xuất
+                  </Button>
+                </Link>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </SheetContent>
       </Sheet>
