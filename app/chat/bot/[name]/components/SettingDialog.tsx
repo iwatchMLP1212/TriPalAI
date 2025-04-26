@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Trash2, ClipboardList } from "lucide-react";
 import { useState } from "react";
 import { useDeleteConversation } from "@/lib/api/conversations/useDeleteConversation";
+import Link from "next/link";
 
 const SettingDialog = ({ slug }: { slug: string }) => {
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
@@ -39,13 +40,15 @@ const SettingDialog = ({ slug }: { slug: string }) => {
           Cài đặt
         </DialogTitle>
         <div className="flex flex-col gap-5 mt-4">
-          <Button
-            variant="outline"
-            className="h-12 text-base gap-3 hover:bg-gray-50 dark:hover:bg-gray-800"
-          >
-            <ClipboardList className="h-5 w-5 text-primary" />
-            Tạo flashcard từ cuộc trò chuyện
-          </Button>
+          <Link href={`/flashcard/create/${slug}`} className="w-full">
+            <Button
+              variant="outline"
+              className="h-12 text-base gap-3 hover:bg-gray-50 dark:hover:bg-gray-800 w-full"
+            >
+              <ClipboardList className="h-5 w-5 text-primary" />
+              Tạo flashcard từ cuộc trò chuyện
+            </Button>
+          </Link>
 
           <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
             <Dialog

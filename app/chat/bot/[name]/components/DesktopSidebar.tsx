@@ -135,14 +135,6 @@ const DesktopSidebar = ({
             </Button>
           </CommandGroup>
           <CommandSeparator />
-          <CommandGroup heading="Gần đây">
-            <Button
-              className="flex justify-start w-full h-full py-4"
-              variant={"ghost"}
-            >
-              Toán Học
-            </Button>
-          </CommandGroup>
         </CommandList>
       </CommandDialog>
       <Button

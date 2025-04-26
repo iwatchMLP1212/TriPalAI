@@ -14,6 +14,7 @@ import { Suspense } from "react";
 import ChatHeader from "@/chat/bot/[name]/components/ChatHeader";
 import ChatHistoryProvider from "@/chat/bot/[name]/ChatHistoryProvider";
 import ChatBodyProvider from "@/chat/bot/[name]/ChatBodyProvider";
+import RestrictedContent from "@/components/RestrictedContent";
 
 type Data = {
   conversations: Conversation;
@@ -40,7 +41,7 @@ const Chat = async ({ params }: { params: Promise<{ chat: string }> }) => {
   // console.log("Session email:", sessionEmail);
 
   if (sessionEmail === undefined) {
-    return <p>You must login to chat</p>;
+    return <RestrictedContent />;
   }
 
   // console.log(data);

@@ -8,7 +8,9 @@ import { getRandomNumbers } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
-import { Lightbulb, BookOpenCheck, CheckCircle2 } from "lucide-react";
+import { Lightbulb, BookOpenCheck, CheckCircle2, Undo2 } from "lucide-react";
+
+import Link from "next/link";
 
 type Color = "blue" | "green" | "gold" | "orange";
 
@@ -70,6 +72,12 @@ const page = () => {
   return (
     <div className="min-h-screen bg-slate-50 py-8 px-4 md:px-6">
       <div className="max-w-3xl mx-auto space-y-8">
+        <Link href={"/"}>
+          <Button variant={"ghost"} className="my-4 hover:bg-gray-200">
+            <Undo2 />
+            Quay lại
+          </Button>
+        </Link>
         <div className="text-center space-y-2">
           <h1 className="text-4xl font-bold text-slate-900 flex items-center justify-center gap-2">
             <BookOpenCheck className="h-8 w-8" /> Kiểm tra tính cách

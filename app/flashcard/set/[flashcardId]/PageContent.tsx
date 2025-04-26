@@ -19,6 +19,7 @@ import { useState, useEffect } from "react";
 import { Progress } from "@radix-ui/react-progress";
 import Link from "next/link";
 import { useSetFlashcardSetIsCompleted } from "@/lib/api/flashcards/useSetFlashcardSetIsCompleted";
+import RestrictedContent from "@/components/RestrictedContent";
 
 export default function FlashcardSetPage({
   flashcardId,
@@ -52,8 +53,7 @@ export default function FlashcardSetPage({
   }
 
   if (status === "unauthenticated") {
-    router.push("/");
-    return null;
+    return <RestrictedContent />;
   }
 
   if (isLoading) {
@@ -83,11 +83,7 @@ export default function FlashcardSetPage({
   }
 
   if (!isOwner) {
-    return (
-      <p className="text-red-500 text-sm text-center mt-10">
-        🚫 You are not authorized to view this flashcard set.
-      </p>
-    );
+    return <RestrictedContent />;
   }
 
   const totalCards = flashcardSet.length;
