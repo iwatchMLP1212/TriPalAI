@@ -74,7 +74,7 @@ const ChatHistory: FC<ChatHistoryProps> = ({
   userName,
   imageUrl,
 }) => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [isRenameOpen, setIsRenameOpen] = useState(false);
   const [selectedConversation, setSelectedConversation] =
     useState<Conversation | null>(null);
