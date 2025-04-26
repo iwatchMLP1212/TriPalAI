@@ -157,8 +157,8 @@ const DesktopSidebar = ({
       </Button>
       <div
         className={`${
-          !sidebarOpen ? "-left-full" : "left-0"
-        } hidden lg:block fixed left-0 top-0 h-screen w-72 border-r bg-background z-40 duration-300 transition-all`}
+          !sidebarOpen ? "-left-96" : "left-0"
+        } hidden lg:block fixed top-0 h-screen w-72 border-r bg-background z-40 duration-300 transition-all`}
       >
         <div className="p-4 h-full flex flex-col">
           <div className="mb-6">
@@ -188,44 +188,44 @@ const DesktopSidebar = ({
 
           <div className="overflow-y-auto flex-1 pb-4">{renderHistory()}</div>
         </div>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Card className="sticky left-0 bottom-4 w-11/12 mx-auto p-3 border border-slate-300 shadow-md hover:shadow-xl transition-all cursor-pointer">
-              <div className="flex items-center gap-4">
-                <Avatar className="w-12 h-12">
-                  <AvatarImage
-                    src={
-                      imageUrl
-                        ? imageUrl
-                        : "https://api.dicebear.com/9.x/glass/svg?seed=Amber"
-                    }
-                    alt="Avatar"
-                    className="w-full h-full"
-                  />
-                </Avatar>
-                <span className="text-base font-medium">{userName}</span>
-              </div>
-            </Card>
-          </DropdownMenuTrigger>
+        <div className="mt-auto sticky bottom-2 mx-2 bg-background">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Card className="w-full mx-auto p-3 border border-slate-300 shadow-md hover:shadow-xl transition-all cursor-pointer">
+                <div className="flex items-center gap-4">
+                  <Avatar className="w-12 h-12">
+                    <AvatarImage
+                      src={
+                        imageUrl ||
+                        "https://api.dicebear.com/9.x/glass/svg?seed=Amber"
+                      }
+                      alt="Avatar"
+                    />
+                  </Avatar>
+                  <span className="text-base font-medium">{userName}</span>
+                </div>
+              </Card>
+            </DropdownMenuTrigger>
 
-          <DropdownMenuContent className="flex flex-col justify-center items-start">
-            <Link href={"/flashcard"} className="w-full">
-              <Button variant={"ghost"} className="text-black w-full">
-                <Layers /> Flashcard
-              </Button>
-            </Link>
-            <Link href={"/character-test"} className="w-full">
-              <Button variant={"ghost"} className="text-black w-full">
-                <UserPen /> Kiểm tra tính cách
-              </Button>
-            </Link>
-            <Link href={"/signout"} className="w-full">
-              <Button variant={"ghost"} className="text-red-500 w-full">
-                <LogOut /> Đăng xuất
-              </Button>
-            </Link>
-          </DropdownMenuContent>
-        </DropdownMenu>
+            <DropdownMenuContent className="w-64 mx-2 mb-2">
+              <Link href={"/flashcard"} className="w-full">
+                <Button variant={"ghost"} className="text-black w-full">
+                  <Layers /> Flashcard
+                </Button>
+              </Link>
+              <Link href={"/character-test"} className="w-full">
+                <Button variant={"ghost"} className="text-black w-full">
+                  <UserPen /> Kiểm tra tính cách
+                </Button>
+              </Link>
+              <Link href={"/signout"} className="w-full">
+                <Button variant={"ghost"} className="text-red-500 w-full">
+                  <LogOut /> Đăng xuất
+                </Button>
+              </Link>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
     </>
   );
