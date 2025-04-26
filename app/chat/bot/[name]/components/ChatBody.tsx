@@ -162,7 +162,7 @@ const ChatBody: FC<ChatBodyProps> = ({ conversationId, chatSlug }) => {
     >
       {mapFetchedMessages}
       {messages.map((message: Message, idx) => (
-        <MessageBubble outgoing={message.outgoing} key={idx}>
+        <MessageBubble outgoing={message.outgoing} key={`lcl-msg-${idx}`}>
           {message.content}
         </MessageBubble>
       ))}
